@@ -1,2 +1,3 @@
-# Sinai_bootcamp
-This is where we'll keep the sinai bootcamp scripts and resources
+# SinaiDataScience
+This is where we'll keep all Sinai Data Science resources, scripts, and more!
+
