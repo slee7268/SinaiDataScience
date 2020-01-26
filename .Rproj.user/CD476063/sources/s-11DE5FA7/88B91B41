@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580066376897.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "88B91B41",
+    "lastKnownWriteTime" : 1580066000,
+    "last_content_update" : 1580066693611,
+    "path" : "/media/sam/chonk/Sinai/Sinai_DS/SinaiDataScience/Rbootcamp/RBootcamp.R",
+    "project_path" : "Rbootcamp/RBootcamp.R",
+    "properties" : {
+        "cursorPosition" : "13,12",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
