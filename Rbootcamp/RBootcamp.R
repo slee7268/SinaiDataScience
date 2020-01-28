@@ -17,3 +17,5 @@ print(y)
 
 typeof(y)
 #Data types
+
+#This comment is from Spencer
