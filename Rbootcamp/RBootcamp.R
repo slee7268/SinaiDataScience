@@ -21,3 +21,4 @@ typeof(y)
 
 #This comment is from Spencer
 #This comment is from Chris
+#Directions: Pull-->Make Edits-->Save-->Commit-->Push
