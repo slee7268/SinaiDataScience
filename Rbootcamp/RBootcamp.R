@@ -1,20 +1,46 @@
 ####################################
-### Welcome to Sinai R Bootcamp! ###
+### WELCOME TO SINAI R BOOTCAMP! ###
 ####################################
 
-# Table of Contents:
-# DAY 1 - Monday, February 3, 2020
-#     1.1 Getting Acquainted with R/RStudio
-#     1.2 Basic X-Y Plotting
-#     1.3 Bar Charts
-#     1.4 Histograms
-#     1.5 Scatterplos
+#get acquainted with RStudio environment
+#Case-sensitivity and no spaces
+y=3
+print(y)
 
-# DAY 2 - Wednesday, February 5, 2020
+#print(Y) throws an error because we have not set Y to anything
+#Use command + enter or ctrl + enter on Windows to run
 
-#############################################
-### 1.1 Getting Acquainted with R/RStudio ###
-#############################################
+#import data
+
+#install.packages and library
+
+typeof(y)
+#Data types
+
+#This comment is from Spencer
+#This comment is from Chris
+#Directions: Pull-->Make Edits-->Save-->Commit-->Push
+
+#####################################################################################
+# I worked through part of a tutorial and added some plotting examples below -Spencer
+# Feel free to use as much/little as you guys want
+# Maybe can use as a guide/outline for visualizing the clinical data
+
+##################################
+### TUTORIAL PLOTTING EXAMPLES ###
+##################################
+
+# 1 Getting Acquainted with R/RStudio
+# 2 Basic X-Y Plotting
+# 3 Bar Charts
+# 4 Histograms
+# 5 Scatterplots
+# 6 Overlaying Plots
+# 7 Data Summary
+
+###########################################
+### 1 Getting Acquainted with R/RStudio ###
+###########################################
 
 # WINDOWS
 # (1) This is the script/source window
@@ -31,9 +57,9 @@
 # (2) Contributed packages = 3rd party that need to be downloaded, installed, and loaded separately
 # Where to get packages? The Comprehensive R Archive Network (cran.r-project.org)...also Crantastic and GitHub
 
-##############################
-### 1.2 Basic X-Y Plotting ###
-##############################
+############################
+### 2 Basic X-Y Plotting ###
+############################
 
 # LOAD DATA
 library(datasets) # Built-in datasets
@@ -68,9 +94,9 @@ plot(dnorm, -3, +3,                         # Same as above
      xlab = "z-scores",                     # X axis label
      ylab = "Density")                      # Y axis label
 
-########################
-### 1.3 BAR CHARTS #####
-########################
+######################
+### 3 BAR CHARTS #####
+######################
 
 # LOAD DATA
 library(datasets) # Built-in datasets
@@ -83,9 +109,9 @@ cylinders <- table(mtcars$cyl) # Create table, feed into variable cylinders
 barplot(cylinders)             # Proper bar chart
 plot(cylinders)                # X-Y plot (lines)
 
-######################
-### 1.4 HISTOGRAMS ###
-######################
+####################
+### 4 HISTOGRAMS ###
+####################
 
 # LOAD DATA
 library(datasets) # Built-in datasets
@@ -114,9 +140,9 @@ hist(iris$Petal.Width [iris$Species == "virginica"],  # VIRGINICA PETAL WIDTH
      col = "blue")                                    # Change color
 par(mfrow = c(1,1))                                   # Restore graphic parameter
 
-########################
-### 1.5 SCATTERPLOTS ###
-########################
+######################
+### 5 SCATTERPLOTS ###
+######################
 
 # LOAD DATA
 library(datasets) # Built-in datasets
@@ -127,26 +153,48 @@ head(mtcars)      # First few rows of dataset
 hist(mtcars$wt)  # Car weights
 hist(mtcars$mpg) # Car miles per gallon
 
+# X-Y PLOT (WT vs MPG)
+plot(mtcars$wt, mtcars$mpg,        # Car weight vs MPG
+     pch = 19,                     # Solid circle
+     col = "red",                  # Color points red
+     main = "Car Weight vs MPG",   # Main title
+     xlab = "Weight (in 1000lbs)", # X axis label
+     ylab = "MPG")                 # Y axis label
 
+##########################
+### 6 OVERLAYING PLOTS ###
+##########################
 
+# LOAD DATA
+library(datasets) # Built-in datasets
+?lynx           # Annual Canadian lynx trappings 1921-1934
+head(lynx)      # First few rows of dataset
 
+# PLOT HISTOGRAM
+hist(lynx,                                        # Plot time series as histogram
+     breaks = 14,                                 # Suggest 14 bins
+     freq = FALSE,                                # Density plot
+     col = "red",                                 # Color red
+     main = "Canadian Lynx Trappings: 1821-1934", # Main title
+     xlab = "Number of Lynx Trapped")             # X axis label
 
-#get acquainted with RStudio environment
-#Case-sensitivity and no spaces
-y=3
-print(y)
+# ADD NORMAL DISTRIBUTION
+curve(dnorm(x, mean = mean(lynx), sd = sd(lynx)), # Plot normal distribution
+      col = "blue",                               # Color blue
+      add = TRUE)                                 # Superimpose over histogram
 
-#print(Y) throws an error because we have not set Y to anything
-#Use command + enter or ctrl + enter on Windows to run
+# ADD RUG PLOT
+rug(lynx, col = "green") # Shows each point as tick mark below histogram
 
-#import data
+######################
+### 7 DATA SUMMARY ###
+######################
 
-#install.packages and library
+# LOAD DATA
+library(datasets) # Built-in datasets
+head(iris)        # First few rows of dataset
 
-typeof(y)
-#Data types
-
-#This comment is from Spencer
-#This comment is from Chris
-#Directions: Pull-->Make Edits-->Save-->Commit-->Push
-#Practice
+# DATA SUMMARIES
+summary(iris$Species)      # Categorical variable
+summary(iris$Sepal.Length) # Quantatative variable
+summary(iris)              # Entire data frame
