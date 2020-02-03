@@ -83,6 +83,11 @@ data$Discharge_Location <-recode(data$Discharge_Location,
                          "6" = "Hospice/Nursing")
 
 #Subsetting and Binding Data
+young <- subset(data, data$AGE < 30)
+boxplot.stats(young$AGE)
+#or 
+summary(young$AGE)
+
 Not_Readmitted <- subset(data, data$readminUnder90d==0)
 Not_Readmitted$Readmission <- "Not Readmitted"
 
