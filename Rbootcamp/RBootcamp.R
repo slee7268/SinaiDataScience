@@ -3,6 +3,7 @@
 ####################################
 
 # Authors: Spencer Kiehm, Chris Bellaire, Samuel Lee
+# Download anonymized data at bit.ly/sinaibootcamp
 
 #get acquainted with RStudio environment
 #Case-sensitivity and no spaces
@@ -42,7 +43,7 @@ library("tidyverse")
 ##########################################################
 #import data
 ##########################################################
-#download anonymized data at bit.ly/sinaibootcamp
+# Download anonymized data at bit.ly/sinaibootcamp
 
 #Two ways of importing data: 1) Using "Import Dataset" Button and 2) Read Path
 #data <- read.csv("pathname")
