@@ -3,11 +3,13 @@
 ####################################
 
 # Authors: Spencer Kiehm, Chris Bellaire, Samuel Lee
+
 # Download anonymized data at bit.ly/sinaibootcamp
 
-#get acquainted with RStudio environment
+#introduce data science club
+#get acquainted with RStudio environment (different panels/windows)
 #Case-sensitivity and no spaces
-y=3
+y=3 #numeric variable
 print(y)
 b<-"Unicorn" # this is a  CHARACTER variable (aka a string)
 print(b)
@@ -90,6 +92,7 @@ summary(young$AGE)
 
 Not_Readmitted <- subset(data, data$readminUnder90d==0)
 Not_Readmitted$Readmission <- "Not Readmitted"
+view(Not_Readmitted)
 
 readmit_within_30_days <- subset(data, data$readminUnder30d==1)
 readmit_within_30_days$Readmission <- "30-Day Readmissions"
