@@ -6,14 +6,15 @@
 
 # Download anonymized data at bit.ly/sinaibootcamp
 
-#introduce data science club
+#Introduce data science club and goals for the bootcamp
 #get acquainted with RStudio environment (different panels/windows)
 #Case-sensitivity and no spaces
 y=3 #numeric variable
 print(y)
+#print(Y) throws an error because we have not set Y to anything
+
 b<-"Unicorn" # this is a  CHARACTER variable (aka a string)
 print(b)
-#print(Y) throws an error because we have not set Y to anything
 #Use command + enter or ctrl + enter on Windows to run
 
 #vectors
