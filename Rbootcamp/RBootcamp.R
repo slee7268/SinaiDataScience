@@ -2,7 +2,7 @@
 ### WELCOME TO SINAI R BOOTCAMP! ###
 ####################################
 
-# Authors: Spencer Kiehm, Christopher Bellaire, Samuel Lee
+# Authors: Spencer Kiehm, Chris Bellaire, Samuel Lee
 
 #get acquainted with RStudio environment
 #Case-sensitivity and no spaces
@@ -27,6 +27,7 @@ vec2[3]
 
 #what about a 2D matrix
 mat <- matrix(1:12, nrow=3, ncol=4)
+view(mat)
 mat[2,3] # this grabs the entry on the 2nd row and 3rd column
 mat[3,]
 mat[,2]
@@ -41,12 +42,160 @@ library("tidyverse")
 ##########################################################
 #import data
 ##########################################################
-data <- read.csv("NRD.csv")
+#download anonymized data at bit.ly/sinaibootcamp
 
+#Two ways of importing data: 1) Using "Import Dataset" Button and 2) Read Path
+#data <- read.csv("pathname")
+data <- read.csv("/Users/christopherbellaire/Desktop/NRD.csv")
+
+view(data)
+head(data)
+str(data)
+summary(data)
 class(data$AGE)
-class(data$KEY_NRD)
-class(data$DISCWT)
-class(data$LOS)
+unique(data$AGE)
+range(data$AGE)
+summary(data$AGE)
+boxplot.stats(data$AGE)
+
+#Recoding Variables
+colnames(data)
+install.packages("data.table")
+library("data.table")
+setnames(data, "PAY1", "insurance")
+unique(data$insurance)
+class(data$insurance)
+data$insurance <-recode(data$insurance, 
+                  "1" = "Medicare", 
+                  "2" = "Medicaid", 
+                  "3" = "Private", 
+                  "4" = "Self-Pay", 
+                  "5" = "No Charge", 
+                  "6" = "Other")
+unique(data$insurance)
+
+setnames(data, "DISPUNIFORM", "Discharge_Location")
+data$Discharge_Location <-recode(data$Discharge_Location, 
+                         "1" = "Home", 
+                         "2" = "Hospital", 
+                         "5" = "Other", 
+                         "6" = "Hospice/Nursing")
+
+#Subsetting and Binding Data
+Not_Readmitted <- subset(data, data$readminUnder90d==0)
+Not_Readmitted$Readmission <- "Not Readmitted"
+
+readmit_within_30_days <- subset(data, data$readminUnder30d==1)
+readmit_within_30_days$Readmission <- "30-Day Readmissions"
+
+readmit_30_90_days <- subset(data, data$readminUnder90d==1 & data$readminUnder30d==0)
+readmit_30_90_days$Readmission <- "30-90 Day Readmissions"
+
+data <- rbind(Not_Readmitted, readmit_within_30_days, readmit_30_90_days)
+
+
+#Two Way Tables Table 1: Patient Population Descriptions
+install.packages("Gmisc")
+library("Gmisc")
+
+getTable1Stats <- function(x, digits = 0, ...){
+  getDescriptionStatsBy(x = x, 
+                        by = data$Readmission,
+                        header_count = TRUE,
+                        statistics = TRUE,
+                        digits = 2,
+                        statistics.sig_lim = 10^-4,
+                        useNA = "no",
+                        ...)}
+
+t1 <- list()
+t1[["Age"]] <-
+  getTable1Stats(data$AGE)
+
+t1[["Insurance Status"]] <- 
+  getTable1Stats(data$insurance)
+
+t1[["Length of Stay"]] <- 
+  getTable1Stats(data$LOS)
+
+mergeDesc(t1,
+          getTable1Stats(data$Readmission)) %>%
+  htmlTable(css.rgroup = "",
+            css.cell = "padding-left: 2em; padding-right: 1em",
+            caption  = "Patient Population Description Statistics for Readmission Populations")
+
+                                                #Regressions
+
+#Binary Logistic Regression using glm function
+#binary_logistic <- glm(Y VARIABLE~X VARIABLE + CONTROL1 + CONTROL2, data = DATASET, family = "binomial")
+unique(data$readminUnder30d)
+binary_logistic <- glm(data$readminUnder30d~data$AGE, family = "binomial")
+summary(binary_logistic)
+
+binary_logistic_controls <- glm(data$readminUnder30d~data$AGE + data$insurance + data$LOS, family = "binomial")
+summary(binary_logistic_controls)
+
+#Linear Regression using lm function
+#fit <- lm(Y VARIABLE ~ X VARIABLE + CONTROL1 + CONTROL2, data=DATASET)
+#summary(fit)
+summary(data$TOTCHG)
+fit <- lm(data$TOTCHG~data$AGE)
+summary(fit)
+
+fit2 <- lm(data$TOTCHG~data$AGE + data$LOS)
+summary(fit2)
+
+                                           #Data Visualizations
+#Plot example
+#plot(X VARIABLE, Y VARIABLE, ylab = "Y AXIS LABEL NAME", xlab = "X AXIS LABEL NAME")
+plot(data$AGE, data$TOTCHG, ylab = "Total Charge ($)", xlab = "Age")
+
+#Boxplot example
+#boxplot(Y VARIABLE ~ X VARIABLE,
+        #data= final_data,
+        #main= "BOXPLOT TITLE",
+        #xlab = "X AXIS LABEL",
+        #ylab="Y AXIS LABEL",
+        #col="COLOR, EX. Light Blue",
+        #border="BORDER COLOR, EX. Black")
+
+boxplot(data$AGE ~ data$Discharge_Location,
+  data= data,
+  main= "Patient Age by Discharge Location",
+  xlab = "Discharge Location",
+  ylab="Age (in years)",
+  col="Light Blue",
+  border="Black")
+
+#ggplot
+#https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot() + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location")
+
+ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot(aes(colour=insurance)) + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location and Insurance Type")
+
+
+                                      #Review
+
+#Recode "FEMALE" column as a character vector, changing 1 to "Female" and 0 to "Male")
+
+#What was the average age of female patients?
+
+#Make a two-way table comparing age, length of stay, and total charge based on gender (using the column "FEMALE", where 1 = female, 0 = male)
+
+#Make a boxplot comparing the age distributions based on gender
+
+#Controlling for gender, does age have a statistically significant effect on length of stay (LOS)?
+
+#Using the ggplot package, make a line plot plotting length of stay (LOS) on the x axis and total charge (TOTCHG) on the y axis
+
+
+
+
+
+
+
+
 
 #your first plot!
 ggplot(data) + geom_point(aes(LOS, DISCWT))
