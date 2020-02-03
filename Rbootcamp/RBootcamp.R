@@ -49,7 +49,7 @@ library("tidyverse")
 # Download anonymized data at bit.ly/sinaibootcamp
 
 #Two ways of importing data: 1) Using "Import Dataset" Button and 2) Read Path
-#data <- read.csv("pathname")
+#data <- read.csv("path name")
 data <- read.csv("/Users/christopherbellaire/Desktop/NRD.csv")
 
 view(data)
@@ -142,7 +142,7 @@ unique(data$readminUnder30d)
 binary_logistic <- glm(data$readminUnder30d~data$AGE, family = "binomial")
 summary(binary_logistic)
 
-binary_logistic_controls <- glm(data$readminUnder30d~data$AGE + data$insurance + data$LOS, family = "binomial")
+binary_logistic_controls <- glm(data$readminUnder30d~data$AGE + data$LOS, family = "binomial")
 summary(binary_logistic_controls)
 
 #Linear Regression using lm function
