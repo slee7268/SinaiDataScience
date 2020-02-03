@@ -9,6 +9,12 @@
 #Introduce data science club and goals for the bootcamp
 #get acquainted with RStudio environment (different panels/windows)
 #Case-sensitivity and no spaces
+
+a<-5
+b=9
+a+b
+
+
 y=3 #numeric variable
 print(y)
 #print(Y) throws an error because we have not set Y to anything
@@ -18,7 +24,22 @@ print(b)
 #Use command + enter or ctrl + enter on Windows to run
 
 #vectors
-vec <- 1:4 # this is a vector of integers
+vec$num <- 1:4 # this is a vector of integers
+vec != 3
+vec$TF <- ifelse(vec$num !=3, 1, 0)
+
+by_date <- data %>%
+  select(daysToNextAdmin, readminUnder90d) %>%
+  group_by(daysToNextAdmin) %>%
+  summarise(readmits = sum(readminUnder90d)) %>%
+  mutate(cum_readmits = cumsum(readmits)) %>%
+  mutate(total_readmits = sum(readmits)) %>%
+  mutate(percent_of_readmits = cumsum(readmits)/sum(readmits)*100) %>%
+  mutate(percent_of_all = cumsum(readmits)/nrow(data)*100)
+
+ggplot(by_date, aes(x=daysToNextAdmin, y=cum_readmits)) + geom_line() + xlab("Days") + ylab("Cumulative Readmissions") + ggtitle("Readmissions over Time") + xlim(0, 90) + geom_vline(xintercept=30, linetype = "dotted")
+
+
 vec2 <- c("hello", "world", "hi")
 vec3 <- c(1, 2, 5)
 print(vec)
@@ -51,7 +72,7 @@ library("tidyverse")
 #Two ways of importing data: 1) Using "Import Dataset" Button and 2) Read Path
 #data <- read.csv("path name")
 data <- read.csv("/Users/christopherbellaire/Desktop/NRD.csv")
-
+data <- NRD
 view(data)
 head(data)
 str(data)
@@ -102,7 +123,7 @@ readmit_30_90_days <- subset(data, data$readminUnder90d==1 & data$readminUnder30
 readmit_30_90_days$Readmission <- "30-90 Day Readmissions"
 
 data <- rbind(Not_Readmitted, readmit_within_30_days, readmit_30_90_days)
-
+unique(data$Readmission)
 
 #Two Way Tables Table 1: Patient Population Descriptions
 install.packages("Gmisc")
@@ -188,6 +209,7 @@ ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot(aes(colo
                                       #Review
 
 #Recode "FEMALE" column as a character vector, changing 1 to "Female" and 0 to "Male")
+
 
 #What was the average age of female patients?
 
