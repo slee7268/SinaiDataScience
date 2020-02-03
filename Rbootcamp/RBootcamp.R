@@ -2,23 +2,111 @@
 ### WELCOME TO SINAI R BOOTCAMP! ###
 ####################################
 
+# Authors: Spencer Kiehm, Christopher Bellaire, Samuel Lee
+
 #get acquainted with RStudio environment
 #Case-sensitivity and no spaces
 y=3
 print(y)
-
+b<-"Unicorn" # this is a  CHARACTER variable (aka a string)
+print(b)
 #print(Y) throws an error because we have not set Y to anything
 #Use command + enter or ctrl + enter on Windows to run
 
+#vectors
+vec <- 1:4 # this is a vector of integers
+vec2 <- c("hello", "world", "hi")
+vec3 <- c(1, 2, 5)
+print(vec)
+print(vec2)
+print(vec3)
+
+#how do I access the 4th element of the first vector?
+vec[4]
+vec2[3]
+
+#what about a 2D matrix
+mat <- matrix(1:12, nrow=3, ncol=4)
+mat[2,3] # this grabs the entry on the 2nd row and 3rd column
+mat[3,]
+mat[,2]
+
+##########################################################
+#libraries
+##########################################################
+
+install.packages("tidyverse")
+library("tidyverse")
+
+##########################################################
 #import data
+##########################################################
+data <- read.csv("NRD.csv")
 
-#install.packages and library
+class(data$AGE)
+class(data$KEY_NRD)
+class(data$DISCWT)
+class(data$LOS)
 
-typeof(y)
+#your first plot!
+ggplot(data) + geom_point(aes(LOS, DISCWT))
+
+
+#V2
+library(datasets) # Built-in datasets
+head(iris)
+data<-iris
+
+class(data$Sepal.Length)
+class(data$Species)
+
+#i'm too lazy I just wanna know the classes
+sapply(data, class)
+
+#what kind of species are we dealing with?
+levels(data$Species)
+
+#let's summarize
+summary(data)
+
+#your first plot
+ggplot(data) + geom_point(aes(Sepal.Length, Sepal.Width))
+
+#let's color it by species and add labels
+ggplot(data) + geom_point(aes(Sepal.Length, Sepal.Width, color = Species)) +
+  labs(title = "my first plot baby", x="Sepal Length", y = "Sepal Width")
+
+#what if i only care about setosa flowers
+setosa <- data %>% filter(Species=="setosa")
+
+#let's plot sepal.length and petal length
+ggplot(setosa, aes(Sepal.Length, Petal.Length)) +
+  geom_point(col="steelblue") + geom_smooth(col="firebrick",method="lm")
+
+#i'm tired of stupid scatterplots
+ggplot(data, aes(Species, Petal.Length, color=Species)) +geom_boxplot()
+
+#barplot
+ggplot(data, aes(Species)) + geom_bar()
+
+
+
+########################################################
+#YOUR TURN
+########################################################
+
+#make a scatterplot with sepal width and petal width
+#now add a linear line with it
+#make a box and whisker plot of the petal length
+
+
+
+ggplot(data) + geom_point(aes(Sepal.Length, Sepal.Width, color = Species)) +
+  labs(title = "my first plot baby", x="Sepal Length", y = "Sepal Width")
+
+
 #Data types
 
-#This comment is from Spencer
-#This comment is from Chris
 #Directions: Pull-->Make Edits-->Save-->Commit-->Push
 
 #####################################################################################
