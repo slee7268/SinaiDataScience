@@ -89,6 +89,11 @@ ggplot(data, aes(Species, Petal.Length, color=Species)) +geom_boxplot()
 #barplot
 ggplot(data, aes(Species)) + geom_bar()
 
+#histogram
+ggplot(data, aes(Sepal.Length)) + geom_histogram(color="blue", fill="lightblue")
+
+#histogram by class
+ggplot(data, aes(Sepal.Length, color=Species)) + geom_histogram( fill="white", alpha = 0.2)
 
 
 ########################################################
@@ -98,7 +103,8 @@ ggplot(data, aes(Species)) + geom_bar()
 #make a scatterplot with sepal width and petal width
 #now add a linear line with it
 #make a box and whisker plot of the petal length
-
+#make a histogram of petal.width
+#make a histogram of petal width and color it by species
 
 
 ggplot(data) + geom_point(aes(Sepal.Length, Sepal.Width, color = Species)) +
