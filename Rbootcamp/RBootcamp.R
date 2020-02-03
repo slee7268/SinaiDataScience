@@ -2,7 +2,7 @@
 ### WELCOME TO SINAI R BOOTCAMP! ###
 ####################################
 
-# Authors: Spencer Kiehm, Chris Bellaire, Samuel Lee
+# Authors: Spencer Kiehm, Chris Bellaire, Sam Lee
 
 # Download anonymized data at bit.ly/sinaibootcamp
 
