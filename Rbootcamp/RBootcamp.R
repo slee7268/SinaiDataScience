@@ -10,11 +10,6 @@
 #get acquainted with RStudio environment (different panels/windows)
 #Case-sensitivity and no spaces
 
-a<-5
-b=9
-a+b
-
-
 y=3 #numeric variable
 print(y)
 #print(Y) throws an error because we have not set Y to anything
@@ -25,21 +20,6 @@ print(b)
 
 #vectors
 vec$num <- 1:4 # this is a vector of integers
-vec != 3
-vec$TF <- ifelse(vec$num !=3, 1, 0)
-
-by_date <- data %>%
-  select(daysToNextAdmin, readminUnder90d) %>%
-  group_by(daysToNextAdmin) %>%
-  summarise(readmits = sum(readminUnder90d)) %>%
-  mutate(cum_readmits = cumsum(readmits)) %>%
-  mutate(total_readmits = sum(readmits)) %>%
-  mutate(percent_of_readmits = cumsum(readmits)/sum(readmits)*100) %>%
-  mutate(percent_of_all = cumsum(readmits)/nrow(data)*100)
-
-ggplot(by_date, aes(x=daysToNextAdmin, y=cum_readmits)) + geom_line() + xlab("Days") + ylab("Cumulative Readmissions") + ggtitle("Readmissions over Time") + xlim(0, 90) + geom_vline(xintercept=30, linetype = "dotted")
-
-
 vec2 <- c("hello", "world", "hi")
 vec3 <- c(1, 2, 5)
 print(vec)
@@ -176,6 +156,22 @@ summary(fit)
 fit2 <- lm(data$TOTCHG~data$AGE + data$LOS)
 summary(fit2)
 
+                                    #Day 1 Review
+
+#Recode "FEMALE" column as a character vector, changing 1 to "Female" and 0 to "Male")
+
+
+#What was the average age of female patients?
+
+#Make a two-way table comparing age, length of stay, and total charge based on gender (using the column "FEMALE", where 1 = female, 0 = male)
+
+#Controlling for gender, does age have a statistically significant effect on length of stay (LOS)?
+
+                              ####################################
+                              ### WELCOME TO SINAI R BOOTCAMP ####
+                              #############DAY 2##################
+                              ####################################
+
                                            #Data Visualizations
 #Plot example
 #plot(X VARIABLE, Y VARIABLE, ylab = "Y AXIS LABEL NAME", xlab = "X AXIS LABEL NAME")
@@ -203,34 +199,71 @@ boxplot(data$AGE ~ data$Discharge_Location,
 
 ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot() + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location")
 
-ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot(aes(colour=insurance)) + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location and Insurance Type")
+ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot(aes(colour=FEMALE)) + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location and Insurance Type")
 
+#dplyr and chaining/pipelining using %>%
+#Functions: filter, select, arrange, mutate, summarise, group_by, as well as SQL-type functions such as inner_join, left_join, etc.
 
-                                      #Review
+#Recall yesterday that we created the subset "young" using the subset function with the condition of data$AGE<30
+young <- subset(data, data$AGE<30)
+view(young)
 
-#Recode "FEMALE" column as a character vector, changing 1 to "Female" and 0 to "Male")
+#Using dplyr's filter function, we can achieve the same subset with cleaner code:
+young_dplyr <- data %>%
+  filter(AGE < 30)
+view(young_dplyr)
 
+#Then, using additional dplyr functions, we can further manipulate the data.  For example, if we want to select only specific columns from our dataset:
+young2_dplyr <- data %>%
+  filter(AGE < 30) %>%
+  select("AGE", "FEMALE", "insurance")
+view(young2_dplyr)
 
-#What was the average age of female patients?
+#More advanced dplyr to analyze hospital readmissions.
+by_date <- data %>%
+  select(daysToNextAdmin, readminUnder90d) %>% #Step 1: selecting relevant vectors (columns/variables)
+  group_by(daysToNextAdmin) %>% #Step 2: Organize the data based on the number of days to readmission
+  summarise(readmits = sum(readminUnder90d)) %>% #Step 3: Create a new variable "readmits" for the total number of readmits
+  mutate(cum_readmits = cumsum(readmits)) #Step 4: Create a new variable "cum_readmits" for cumulative readmits
 
-#Make a two-way table comparing age, length of stay, and total charge based on gender (using the column "FEMALE", where 1 = female, 0 = male)
+view(by_date)
 
-#Make a boxplot comparing the age distributions based on gender
+#Combining what we've learned about ggplot with dplyr data
+ggplot(by_date, aes(x=daysToNextAdmin, y=cum_readmits)) + geom_line() + xlab("Days") + ylab("Cumulative Readmissions") + ggtitle("Readmissions over Time") + xlim(0, 90) + geom_vline(xintercept=30, linetype = "dotted")
 
-#Controlling for gender, does age have a statistically significant effect on length of stay (LOS)?
+                                                  #Day 2 Review
+
+#Make a boxplot (using ggplot or boxplot functions) comparing the age distributions based on gender
 
 #Using the ggplot package, make a line plot plotting length of stay (LOS) on the x axis and total charge (TOTCHG) on the y axis
 
+#Using dplyr, create a dataframe "medicaid" that includes only patients on Medicaid.  Only include columns "insurance", "TOTCHG", and "readminUnder90d" and "Year".  Then create a NEW column "annual_readmits" with the number of readmissions by year
+
+medicaid <- data %>%
+  filter(insurance == "Medicaid") %>%
+  select(insurance, TOTCHG, readminUnder90d, Year) %>%
+  group_by(Year) %>%
+  mutate(annual_readmits = sum(readminUnder90d)) 
+
+view(medicaid)
+
+#To determine the number of medicaid readmissions in 2014,
+medicaid %>%
+  filter(Year == 2014) %>%
+  tally(readminUnder90d)
+
+#We get the same result using the subset function from Monday:
+medicaid_readmits_2014 <- subset(data, data$Year==2014 & data$readminUnder90d==1 & data$insurance=="Medicaid")
+nrow(medicaid_readmits_2014)
+view(medicaid_readmits_2014)
+
+                                            ####################################
+                                            ### WELCOME TO SINAI R BOOTCAMP ####
+                                            #########Additional Practice#########
+                                            ####################################
 
 
-
-
-
-
-
-
-#your first plot!
-ggplot(data) + geom_point(aes(LOS, DISCWT))
+                                        
 
 
 #V2
