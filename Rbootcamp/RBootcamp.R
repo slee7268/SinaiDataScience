@@ -231,14 +231,10 @@ view(by_date)
 #Combining what we've learned about ggplot with dplyr data
 ggplot(by_date, aes(x=daysToNextAdmin, y=cum_readmits)) + geom_line() + xlab("Days") + ylab("Cumulative Readmissions") + ggtitle("Readmissions over Time") + xlim(0, 90) + geom_vline(xintercept=30, linetype = "dotted")
 
-                                                  #Day 2 Review
 
-#Make a boxplot (using ggplot or boxplot functions) comparing the age distributions based on gender
+#Question: Using dplyr, create a dataframe "medicaid" that includes only patients on Medicaid.  Only include columns "insurance", "TOTCHG", and "readminUnder90d" and "Year".  Then create a NEW column "annual_readmits" with the number of readmissions by year (ex. there were 48 medicaid readmissions in 2014)
 
-#Using the ggplot package, make a line plot plotting length of stay (LOS) on the x axis and total charge (TOTCHG) on the y axis
-
-#Using dplyr, create a dataframe "medicaid" that includes only patients on Medicaid.  Only include columns "insurance", "TOTCHG", and "readminUnder90d" and "Year".  Then create a NEW column "annual_readmits" with the number of readmissions by year
-
+#Answer
 medicaid <- data %>%
   filter(insurance == "Medicaid") %>%
   select(insurance, TOTCHG, readminUnder90d, Year) %>%
@@ -256,6 +252,14 @@ medicaid %>%
 medicaid_readmits_2014 <- subset(data, data$Year==2014 & data$readminUnder90d==1 & data$insurance=="Medicaid")
 nrow(medicaid_readmits_2014)
 view(medicaid_readmits_2014)
+
+                                                  #Day 2 Review
+
+#Make a boxplot (using ggplot or boxplot functions) comparing the age distributions based on gender
+
+#Using the ggplot package, make a line plot plotting length of stay (LOS) on the x axis and total charge (TOTCHG) on the y axis
+
+
 
                                             ####################################
                                             ### WELCOME TO SINAI R BOOTCAMP ####
