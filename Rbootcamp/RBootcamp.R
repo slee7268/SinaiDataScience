@@ -156,7 +156,7 @@ summary(fit)
 fit2 <- lm(data$TOTCHG~data$AGE + data$LOS)
 summary(fit2)
 
-                                    #Day 1 Review
+                                                    #Day 1 Review
 
 #Recode "FEMALE" column as a character vector, changing 1 to "Female" and 0 to "Male")
 
@@ -167,10 +167,12 @@ summary(fit2)
 
 #Controlling for gender, does age have a statistically significant effect on length of stay (LOS)?
 
+
                               ####################################
                               ### WELCOME TO SINAI R BOOTCAMP ####
                               #############DAY 2##################
                               ####################################
+
 
                                            #Data Visualizations
 #Plot example
@@ -201,7 +203,8 @@ ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot() + xlab
 
 ggplot(data, aes(x=data$Discharge_Location, y=data$AGE)) + geom_boxplot(aes(colour=FEMALE)) + xlab("Discharge Location") + ylab("Age") + ggtitle("Patient Age by Discharge Location and Insurance Type")
 
-#dplyr and chaining/pipelining using %>%
+                                            #dplyr and chaining/pipelining using %>%
+
 #Functions: filter, select, arrange, mutate, summarise, group_by, as well as SQL-type functions such as inner_join, left_join, etc.
 
 #Recall yesterday that we created the subset "young" using the subset function with the condition of data$AGE<30
@@ -213,7 +216,7 @@ young_dplyr <- data %>%
   filter(AGE < 30)
 view(young_dplyr)
 
-#Then, using additional dplyr functions, we can further manipulate the data.  For example, if we want to select only specific columns from our dataset:
+#Then, using additional dplyr chaining, we can further manipulate the data.  For example, if we want to select only specific columns from our dataset:
 young2_dplyr <- data %>%
   filter(AGE < 30) %>%
   select("AGE", "FEMALE", "insurance")
@@ -248,16 +251,31 @@ medicaid %>%
   filter(Year == 2014) %>%
   tally(readminUnder90d)
 
-#We get the same result using the subset function from Monday:
+#We get the same result using the subset function from Monday's session
 medicaid_readmits_2014 <- subset(data, data$Year==2014 & data$readminUnder90d==1 & data$insurance=="Medicaid")
 nrow(medicaid_readmits_2014)
 view(medicaid_readmits_2014)
 
-                                                  #Day 2 Review
+                                           #Review Together
 
-#Make a boxplot (using ggplot or boxplot functions) comparing the age distributions based on gender
+#Use ggplot's geom_density plot to show the age distributions for men and women
+
+class(data$FEMALE)
+data$FEMALE <- as.factor(data$FEMALE)
+ggplot(data, aes(x=AGE, fill = FEMALE)) + geom_density(alpha=.5) + labs(x = "Age", y = "Frequency", title = "Density Plots of Age and Gender")
+
+#Make a barchart of number of male and female patients by insurance type
+
+ggplot(data, aes(x=insurance, fill=FEMALE)) + geom_bar() + labs(x="Insurance Type", y = "Number of Patients", title = "Patients by Insurance Status and Gender")
+
+
+                                                  #Day 2 review on your own
+
+#Make a boxplot (using ggplot or boxplot function) comparing the age distributions (vector name: AGE) based on gender (vector name: FEMALE)
 
 #Using the ggplot package, make a line plot plotting length of stay (LOS) on the x axis and total charge (TOTCHG) on the y axis
+
+#Make a barchart using ggplot with number of patients by insurance type, with a fill for whether or not they were readmitted during the 90 days following their procedure (data$readminUnder90d)
 
 
 
@@ -328,15 +346,6 @@ ggplot(data, aes(Sepal.Length, color=Species)) + geom_histogram( fill="white", a
 ggplot(data) + geom_point(aes(Sepal.Length, Sepal.Width, color = Species)) +
   labs(title = "my first plot baby", x="Sepal Length", y = "Sepal Width")
 
-
-#Data types
-
-#Directions: Pull-->Make Edits-->Save-->Commit-->Push
-
-#####################################################################################
-# I worked through part of a tutorial and added some plotting examples below -Spencer
-# Feel free to use as much/little as you guys want
-# Maybe can use as a guide/outline for visualizing the clinical data
 
 ##################################
 ### TUTORIAL PLOTTING EXAMPLES ###
